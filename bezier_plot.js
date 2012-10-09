@@ -17,7 +17,9 @@ function init(canvasName)
     if (canvas.getContext)
     {
         context = canvas.getContext('2d');
-        context.viewPort = new ViewPort(canvas.width, canvas.height);
+        var w = canvas.width = canvas.clientWidth;
+        var h = canvas.height = canvas.clientHeight;
+        context.viewPort = new ViewPort(w, h);
     }
     else
     {
@@ -119,7 +121,6 @@ function parseLines(data)
         for (j = 0; j < positions.length; j += 2)
         {
 			coord = new Coord(parseFloat(positions[j]), parseFloat(positions[j+1]));
-			// coord.setColor(colors[i % colors.length]);
             set.push(coord);
         }
 
@@ -129,7 +130,34 @@ function parseLines(data)
     return lines;
 }
 
-function drawLines(lines)
+function parsePoints(data)
+{
+    var exp = /[^0-9.-]/g;
+    var input = data.replace(exp, ' ');
+    input = input.replace(/[ ]+/g, ' ');
+
+    var pointsData = input.split(' ');
+
+    var points = new Array();
+
+    for (i = 0; i < pointsData.length; i += 2)
+    {
+        if (i + 1 >= pointsData.length)
+        {
+            break;
+        }
+
+        var x = pointsData[i].trim();
+        var y = pointsData[i + 1].trim();
+
+        var coord = new Coord(parseFloat(x), parseFloat(y));
+        points.push(coord);
+    }
+
+    return points;
+}
+
+function drawLines(lines, close=false)
 {
 	var colors = ["#339933", "#1947D1", "#FF9900", "#FF0000"];
 
@@ -153,7 +181,56 @@ function drawLines(lines)
                 addPoint(coord2, colors[i % colors.length]);
                 addLine(coord1, coord2, colors[i % colors.length]);
             }
+
+            if (close)
+            {
+                var coord1 = lineDef[lineDef.length - 1];
+                var coord2 = lineDef[0];
+                addLine(coord1, coord2, colors[i % colors.length]);
+            }
         }
+    }
+
+    draw();
+}
+
+function drawRectangle(points)
+{
+	var colors = ["#339933", "#1947D1", "#FF9900", "#FF0000"];
+
+    for (i = 0; i < points.length; i += 2)
+    {
+        if (i + 1 >= points.length)
+        {
+            break;
+        }
+
+        var coord1 = points[i];
+        var coord2 = new Coord(points[i + 1].getX(), points[i].getY());
+        var coord3 = points[i + 1];
+        var coord4 = new Coord(points[i].getX(), points[i + 1].getY());
+
+        addPoint(coord1, colors[i % colors.length]);
+        addPoint(coord2, colors[i % colors.length]);
+        addPoint(coord3, colors[i % colors.length]);
+        addPoint(coord4, colors[i % colors.length]);
+        addLine(coord1, coord2, colors[i % colors.length]);
+        addLine(coord2, coord3, colors[i % colors.length]);
+        addLine(coord3, coord4, colors[i % colors.length]);
+        addLine(coord4, coord1, colors[i % colors.length]);
+    }
+
+    draw();
+}
+
+function drawPoints(points)
+{
+	var colors = ["#339933", "#1947D1", "#FF9900", "#FF0000"];
+
+    for (i = 0; i < points.length; ++i)
+    {
+        var coord = points[i];
+        addPoint(coord, colors[i % colors.length]);
     }
 
     draw();

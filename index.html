@@ -6,14 +6,15 @@
 <script type="text/javascript" src="drawable.js"></script>
 <script type="text/javascript" src="point.js"></script>
 <script type="text/javascript" src="line.js"></script>
+<script type="text/javascript" src="polygon.js"></script>
 <script type="text/javascript" src="bezier.js"></script>
 <script type="text/javascript" src="bezier_plot.js"></script>
 
 <script language="javascript">
-
+<!--
     function clear()
     {
-        this.value = "0,0 10,90 150,110 200,-10 0,0"
+        this.value = "0,0 10,90 | 150,110 200,-10"
         this.focus();
     }
 
@@ -34,6 +35,17 @@
         textArea.clear();
     }
 
+    function submitPoints(area)
+    {
+        textArea = document.getElementsByName(area)[0];
+        if (textArea == null)
+        {
+            return;
+        }
+
+        drawPoints(parsePoints(textArea.value));
+    }
+
     function submitLines(area)
     {
         textArea = document.getElementsByName(area)[0];
@@ -43,6 +55,28 @@
         }
 
         drawLines(parseLines(textArea.value));
+    }
+
+    function submitPolygons(area)
+    {
+        textArea = document.getElementsByName(area)[0];
+        if (textArea == null)
+        {
+            return;
+        }
+
+        drawLines(parseLines(textArea.value), true);
+    }
+
+    function submitRectangle(area)
+    {
+        textArea = document.getElementsByName(area)[0];
+        if (textArea == null)
+        {
+            return;
+        }
+
+        drawRectangle(parsePoints(textArea.value));
     }
 
     function submitBezier(area)
@@ -56,28 +90,63 @@
         drawBezier(parseBezier(textArea.value));
     }
 
+    function HideContent(d)
+    {
+        if (d.length < 1)
+        {
+            return;
+        }
+        document.getElementById(d).style.display = "none";
+    }
+
+    function ShowContent(d)
+    {
+        if (d.length < 1)
+        {
+            return;
+        }
+        document.getElementById(d).style.display = "block";
+    }
+-->
 </script>
 
 <style type="text/css">
-    #canvas { border: 1px solid; float:left; position:relative; left:10px; top:15px }
-    #debug { color: blue; border: 1px none; padding:3px; float:left; position:absolute; top:550px; }
+    #data { text-align:left; float:left; width:30%; top:10px; left:10px; }
+    #canvas { border:1px solid; width:69%; height:800px; float:left; top:10px; }
+    #debug { color: blue; border: 1px none; padding:3px; top:550px; }
     div { font-family: Arial, Helvetica, sans-serif; font-size: 10pt; }
-    textarea { font-family: Arial, Helvetica, sans-serif; font-size: 10pt; width:95%; height:60%}
-    #data { text-align:center; float:left; width:30% }
+    textarea { font-family: Arial, Helvetica, sans-serif; font-size: 10pt; width:95%; height:60%; }
+    a { text-decoration:none; }
+    #help { display:none; position:absolute; top:35px; border-style:solid; background-color: #eeeeee; padding:5px; }
 </style>
 </head>
 
-<body onload="clearTextAreas(); init('plot');" bgcolor="#ffffff">
-    <div id="data">
-		Separate lines with '|'.<br />Each group of 4 points is used to draw bézier curves.<br />
-		<textarea name="lineData" rows=30 wrap="soft"></textarea><br />
-		<div style="padding:10px">
-		   <button type="button" onclick="submitLines('lineData');">Draw lines</button>
-		   <button type="button" onclick="submitBezier('lineData');">Draw bézier curves</button>
-		   <button type="button" onclick="clearCanvas();">Clear canvas</button>
-		</div>
+<body onload="clearTextAreas(); init('canvas');" bgcolor="#ffffff">
+    <div id="helpLink">
+        <a onmouseover="ShowContent('help'); return true;"
+           onmouseout="HideContent('help'); return true;"
+        href="javascript:ShowContent('help')">Help</a>
     </div>
-    <div id="canvas"><canvas id="plot" width="800" height="800"></canvas></div>
+    <div id="help">
+        Points: each point is drawn individually.<br/>
+        Lines: each consecutive points are connected. Use "|" to separate points.<br/>
+        Polygons: like lines except that the last point is connected to the first point.<br/>
+        Rectangles: each group of 2 points is used to form a rectangle (top,left) (bottom,right).<br/>
+        Bézier curves: each group of 4 points is used to form a cubic bézier curve.<br/><br/>
+        Note: any non-numeric character is ignored, except "|"
+    </div>
+    <div id="data">
+        <textarea name="lineData" rows=30 wrap="soft"></textarea><br/>
+        <div style="padding:10px">
+           <button type="button" onclick="submitPoints('lineData');">Points</button>
+           <button type="button" onclick="submitLines('lineData');">Lines</button>
+           <button type="button" onclick="submitPolygons('lineData');">Polygons</button>
+           <button type="button" onclick="submitRectangle('lineData');">Rectangles</button>
+           <button type="button" onclick="submitBezier('lineData');">Bézier curves</button>
+           <center><button type="button" onclick="clearCanvas();">Clear canvas</button></center>
+        </div>
+    </div>
+    <canvas id="canvas"></canvas>
     <div id="debug"></div>
 </body>
 </html>
