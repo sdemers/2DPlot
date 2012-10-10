@@ -134,7 +134,7 @@ function parsePoints(data)
 {
     var exp = /[^0-9.-]/g;
     var input = data.replace(exp, ' ');
-    input = input.replace(/[ ]+/g, ' ');
+    input = input.replace(/[ ]+/g, ' ').trim();
 
     var pointsData = input.split(' ');
 
