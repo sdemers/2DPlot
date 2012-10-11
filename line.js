@@ -21,8 +21,8 @@ Line.prototype.getLimit = function()
     var s = this.startCoord;
     var e = this.endCoord;
 
-    var mini = new Coord(min(s.getX(), e.getX()), min(s.getY(), e.getY()));
-    var maxi = new Coord(max(s.getX(), e.getX()), max(s.getY(), e.getY()));
+    var mini = s.min(e);
+    var maxi = s.max(e);
     return [mini, maxi];
 }
 

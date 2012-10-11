@@ -74,12 +74,8 @@ Bezier.prototype.getLimit = function()
     var cp2 = this.cp2;
     var e   = this.end.getCoord();
 
-    var minX = min(s.getX(), min(cp1.getX(), min(cp2.getX(), e.getX())));
-    var minY = min(s.getY(), min(cp1.getY(), min(cp2.getY(), e.getY())));
-    var maxX = max(s.getX(), max(cp1.getX(), max(cp2.getX(), e.getX())));
-    var maxY = max(s.getY(), max(cp1.getY(), max(cp2.getY(), e.getY())));
+    var mini = s.min(cp1).min(cp2).min(e);
+    var maxi = s.max(cp1).max(cp2).max(e);
 
-    var mini = new Coord(minX, minY);
-    var maxi = new Coord(maxX, maxY);
     return [mini, maxi];
 }

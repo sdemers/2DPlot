@@ -36,6 +36,22 @@ Coord.prototype.setXY = function(x, y)
     this.setY(y);
 }
 
+Coord.prototype.min = function(rhs)
+{
+    var x = min(this.x, rhs.x);
+    var y = min(this.y, rhs.y);
+
+    return new Coord(x, y);
+}
+
+Coord.prototype.max = function(rhs)
+{
+    var x = max(this.x, rhs.x);
+    var y = max(this.y, rhs.y);
+
+    return new Coord(x, y);
+}
+
 /// Point class --------------------------------------------
 
 Point.prototype = new Drawable;

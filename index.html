@@ -9,8 +9,78 @@
 <script type="text/javascript" src="bezier.js"></script>
 <script type="text/javascript" src="bezier_plot.js"></script>
 
+<!-- <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.js"></script> -->
+
 <script language="javascript">
-<!--
+
+    var translatePos = {x:0, y:0};
+    var scale = 1.0;
+    var startDragOffset = {};
+
+    function initZoom()
+    {
+        var canvas = document.getElementById("canvas");
+        var scaleMultiplier = 0.8;
+        var mouseDown = false;
+
+        // add button event listeners
+        document.getElementById("plus").addEventListener("click", function(){
+            scale /= scaleMultiplier;
+            draw(scale, translatePos);
+        }, false);
+
+        document.getElementById("minus").addEventListener("click", function(){
+            scale *= scaleMultiplier;
+            draw(scale, translatePos);
+        }, false);
+
+        document.getElementById("reset").addEventListener("click", function(){
+            scale = 1;
+            translatePos.x = 0;
+            translatePos.y = 0;
+            draw(scale, translatePos);
+        }, false);
+
+        // add event listeners to handle screen drag
+        canvas.addEventListener("mousedown", function(evt) {
+            mouseDown = true;
+            startDragOffset.x = evt.clientX - translatePos.x;
+            startDragOffset.y = evt.clientY - translatePos.y;
+        });
+
+        canvas.addEventListener("mouseup", function(evt) {
+            mouseDown = false;
+        });
+
+        canvas.addEventListener("mouseover", function(evt) {
+            mouseDown = false;
+        });
+
+        canvas.addEventListener("mouseout", function(evt) {
+            mouseDown = false;
+        });
+
+        canvas.addEventListener("mousemove", function(evt) {
+            if (mouseDown)
+            {
+                translatePos.x = evt.clientX - startDragOffset.x;
+                translatePos.y = evt.clientY - startDragOffset.y;
+                draw(scale, translatePos);
+            }
+        });
+
+    }
+
+    function resetZoom()
+    {
+        scale = 1.0;
+        translatePos.x = 0;
+        translatePos.y = 0;
+
+        startDragOffset.x = 0;
+        startDragOffset.y = 0;
+    }
+
     function clear()
     {
         this.value = "0,0 10,90 | 150,110 200,-10"
@@ -42,7 +112,7 @@
             return;
         }
 
-        drawPoints(parsePoints(textArea.value));
+        drawPoints(parsePoints(textArea.value), scale, translatePos);
     }
 
     function submitLines(area)
@@ -53,7 +123,7 @@
             return;
         }
 
-        drawLines(parseLines(textArea.value));
+        drawLines(parseLines(textArea.value), scale, translatePos);
     }
 
     function submitPolygons(area)
@@ -64,7 +134,7 @@
             return;
         }
 
-        drawLines(parseLines(textArea.value), true);
+        drawLines(parseLines(textArea.value), scale, translatePos, true);
     }
 
     function submitRectangle(area)
@@ -75,7 +145,7 @@
             return;
         }
 
-        drawRectangle(parsePoints(textArea.value));
+        drawRectangle(parsePoints(textArea.value), scale, translatePos);
     }
 
     function submitBezier(area)
@@ -86,10 +156,10 @@
             return;
         }
 
-        drawBezier(parseBezier(textArea.value));
+        drawBezier(parseBezier(textArea.value), scale, translatePos);
     }
 
-    function HideContent(d)
+    function hideContent(d)
     {
         if (d.length < 1)
         {
@@ -98,7 +168,7 @@
         document.getElementById(d).style.display = "none";
     }
 
-    function ShowContent(d)
+    function showContent(d)
     {
         if (d.length < 1)
         {
@@ -106,24 +176,62 @@
         }
         document.getElementById(d).style.display = "block";
     }
--->
+
 </script>
 
 <style type="text/css">
-    #data { text-align:left; float:left; width:30%; top:10px; left:10px; }
-    #canvas { border:1px solid; width:69%; height:800px; float:left; top:10px; }
     #debug { color: blue; border: 1px none; padding:3px; top:550px; }
     div { font-family: Arial, Helvetica, sans-serif; font-size: 10pt; }
     textarea { font-family: Arial, Helvetica, sans-serif; font-size: 10pt; width:95%; height:60%; }
     a { text-decoration:none; }
-    #help { display:none; position:absolute; top:35px; border-style:solid; background-color: #eeeeee; padding:5px; }
+
+    #data {
+        text-align:left;
+        float:left;
+        width:30%;
+        top:10px;
+        left:10px;
+    }
+
+    #canvasWrapper {
+        position: relative;
+        width: 69%;
+        height: 800px;
+        float:left;
+    }
+
+    #canvas { border:1px solid; width:100%; height:800px; }
+
+    #buttonWrapper {
+        position: absolute;
+        width: 30px;
+        top: 2px;
+        right: 2px;
+    }
+
+    #help {
+        display:none;
+        position:absolute;
+        top:35px;
+        border:2px solid;
+        background-color: #eeeeee;
+        padding:5px;
+        z-index: 99;
+    }
+
+    input[type = "button"] {
+        padding: 5px;
+        width: 30px;
+        height: 30px;
+        margin: 0px 0px 2px 0px;
+    }
 </style>
 </head>
 
-<body onload="clearTextAreas(); init('canvas');" bgcolor="#ffffff">
+<body onload="clearTextAreas(); init('canvas'); initZoom();" bgcolor="#ffffff">
     <div id="helpLink">
-        <a onmouseover="ShowContent('help'); return true;"
-           onmouseout="HideContent('help'); return true;"
+        <a onmouseover="showContent('help'); return true;"
+           onmouseout="hideContent('help'); return true;"
         href="javascript:ShowContent('help')">Help</a>
     </div>
     <div id="help">
@@ -142,10 +250,17 @@
            <button type="button" onclick="submitPolygons('lineData');">Polygons</button>
            <button type="button" onclick="submitRectangle('lineData');">Rectangles</button>
            <button type="button" onclick="submitBezier('lineData');">Bézier curves</button>
-           <center><button type="button" onclick="clearCanvas();">Clear canvas</button></center>
+           <center><button type="button" onclick="clearCanvas(); resetZoom();">Clear canvas</button></center>
         </div>
     </div>
-    <canvas id="canvas"></canvas>
+    <div id="canvasWrapper">
+        <canvas id="canvas"></canvas>
+        <div id="buttonWrapper">
+            <input type="button" id="plus" value="+">
+            <input type="button" id="minus" value="-">
+            <input type="button" id="reset" value="o">
+        </div>
+    </div>
     <div id="debug"></div>
 </body>
 </html>

@@ -27,10 +27,10 @@ function init(canvasName)
     }
 }
 
-function draw()
+function draw(scale, translatePos)
 {
     emptyCanvas();
-
+ 
     var limits = [];
     objects.forEach(function(obj)
     {
@@ -47,10 +47,8 @@ function draw()
             }
             else
             {
-                var lmin = limits[0];
-                var lmax = limits[1];
-                var newMin = new Coord(min(objMin.getX(), lmin.getX()), min(objMin.getY(), lmin.getY()));
-                var newMax = new Coord(max(objMax.getX(), lmax.getX()), max(objMax.getY(), lmax.getY()));
+                var newMin = objMin.min(limits[0]);
+                var newMax = objMax.max(limits[1]);
                 limits = [newMin, newMax];
             }
         }
@@ -58,8 +56,23 @@ function draw()
 
     if (context != null)
     {
-        context.viewPort.setLimits(limits[0], limits[1]);
+        context.save();
+
+        context.translate(translatePos.x, translatePos.y);
+
+        // Apply scale factor
+        var l0 = new Coord(limits[0].getX() * 1/scale, limits[0].getY() * 1/scale);
+        var l1 = new Coord(limits[1].getX() * 1/scale, limits[1].getY() * 1/scale);
+
+        context.viewPort.setLimits(l0, l1);
+
         objects.forEach(function(obj) { obj.draw(context); });
+
+        //var text = "Limits: (" + l0.x + ", " + l0.y + "), (" + l1.x + ", " + l1.y + ")";
+        //context.translate(-translatePos.x, -translatePos.y);
+        //context.strokeText(text, 20, 20);
+
+        context.restore();
     }
 }
 
@@ -157,7 +170,7 @@ function parsePoints(data)
     return points;
 }
 
-function drawLines(lines, close=false)
+function drawLines(lines, scale, translatePos, close=false)
 {
 	var colors = ["#339933", "#1947D1", "#FF9900", "#FF0000"];
 
@@ -191,10 +204,10 @@ function drawLines(lines, close=false)
         }
     }
 
-    draw();
+    draw(scale, translatePos);
 }
 
-function drawRectangle(points)
+function drawRectangle(points, scale, translatePos)
 {
 	var colors = ["#339933", "#1947D1", "#FF9900", "#FF0000"];
 
@@ -220,10 +233,10 @@ function drawRectangle(points)
         addLine(coord4, coord1, colors[i % colors.length]);
     }
 
-    draw();
+    draw(scale, translatePos);
 }
 
-function drawPoints(points)
+function drawPoints(points, scale, translatePos)
 {
 	var colors = ["#339933", "#1947D1", "#FF9900", "#FF0000"];
 
@@ -233,7 +246,7 @@ function drawPoints(points)
         addPoint(coord, colors[i % colors.length]);
     }
 
-    draw();
+    draw(scale, translatePos);
 }
 
 function addPoint(coord, color)
@@ -299,14 +312,14 @@ function addBezier(curve)
     objects.push(curve);
 }
 
-function drawBezier(curves)
+function drawBezier(curves, scale, translatePos)
 {
     for (i = 0; i < curves.length; ++i)
     {
         addBezier(curves[i]);
     }
 
-    draw();
+    draw(scale, translatePos);
 }
 
 /// ViewPort object
