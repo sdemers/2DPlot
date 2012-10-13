@@ -71,6 +71,25 @@
 
     }
 
+    function init(canvasName)
+    {
+        debug = new Debug("debug");
+
+        var canvas = document.getElementById(canvasName);
+
+        if (canvas.getContext)
+        {
+            context = canvas.getContext('2d');
+            var w = canvas.width = canvas.clientWidth;
+            var h = canvas.height = canvas.clientHeight;
+            context.viewPort = new ViewPort(w, h);
+        }
+        else
+        {
+            return;
+        }
+    }
+
     function resetZoom()
     {
         scale = 1.0;

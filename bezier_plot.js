@@ -8,25 +8,6 @@ var objects = new Array();
 
 var debug = null;
 
-function init(canvasName)
-{
-    debug = new Debug("debug");
-
-    var canvas = document.getElementById(canvasName);
-
-    if (canvas.getContext)
-    {
-        context = canvas.getContext('2d');
-        var w = canvas.width = canvas.clientWidth;
-        var h = canvas.height = canvas.clientHeight;
-        context.viewPort = new ViewPort(w, h);
-    }
-    else
-    {
-        return;
-    }
-}
-
 function draw(scale, translatePos)
 {
     emptyCanvas();
@@ -170,7 +151,7 @@ function parsePoints(data)
     return points;
 }
 
-function drawLines(lines, scale, translatePos, close=false)
+function drawLines(lines, scale, translatePos, close)
 {
 	var colors = ["#339933", "#1947D1", "#FF9900", "#FF0000"];
 
