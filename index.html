@@ -20,6 +20,10 @@
     function initZoom()
     {
         var canvas = document.getElementById("canvas");
+        var topLeft = findPos(canvas);
+        canvas.leftPos = topLeft[0];
+        canvas.topPos = topLeft[1];
+
         var scaleMultiplier = 0.8;
         var mouseDown = false;
 
@@ -67,6 +71,11 @@
                 translatePos.y = evt.clientY - startDragOffset.y;
                 draw(scale, translatePos);
             }
+        });
+
+        canvas.addEventListener("mousemove", function(evt) {
+            debug.clear();
+            debug.append((evt.clientX - this.leftPos) + ", " + (evt.clientY - this.topPos));
         });
 
     }
