@@ -12,6 +12,8 @@ function draw(scale, translatePos)
 {
     emptyCanvas();
  
+    debug.clear();
+
     var limits = [];
     objects.forEach(function(obj)
     {
@@ -39,15 +41,13 @@ function draw(scale, translatePos)
     {
         context.save();
 
-        context.translate(translatePos.x, translatePos.y);
-
         // Apply scale factor
         var l0 = new Coord(limits[0].getX() * 1/scale, limits[0].getY() * 1/scale);
         var l1 = new Coord(limits[1].getX() * 1/scale, limits[1].getY() * 1/scale);
 
         context.viewPort.setLimits(l0, l1);
 
-        objects.forEach(function(obj) { obj.draw(context); });
+        objects.forEach(function(obj) { obj.draw(context, translatePos); });
 
         //var text = "Limits: (" + l0.x + ", " + l0.y + "), (" + l1.x + ", " + l1.y + ")";
         //context.translate(-translatePos.x, -translatePos.y);
@@ -301,6 +301,25 @@ function drawBezier(curves, scale, translatePos)
     }
 
     draw(scale, translatePos);
+}
+
+function getCloseObjects(coord)
+{
+    var closeObjects = [];
+
+    objects.forEach(function(obj)
+    {
+        var d = obj.getDistanceDrawn(coord)
+        if (d != null)
+        {
+            if (d < 15)
+            {
+                closeObjects.push(obj);
+            }
+        }
+    });
+
+    return closeObjects;
 }
 
 /// ViewPort object

@@ -2,6 +2,8 @@
 <html lang="en-US" xml:lang="en-US" xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <title>Bezier Plot</title>
+<meta http-equiv="content-type" content="text/html;charset=iso-8859-1" />
+
 <script type="text/javascript" src="utils.js"></script>
 <script type="text/javascript" src="drawable.js"></script>
 <script type="text/javascript" src="point.js"></script>
@@ -74,8 +76,26 @@
         });
 
         canvas.addEventListener("mousemove", function(evt) {
-            debug.clear();
-            debug.append((evt.clientX - this.leftPos) + ", " + (evt.clientY - this.topPos));
+            var point = new Coord((evt.clientX - this.leftPos), (evt.clientY - this.topPos));
+            debug.clear()
+            //debug.append(point.getX() + ", " + point.getY() + "<br>");
+            var closeObjects = getCloseObjects(point);
+
+            //debug.clear();
+            closeObjects.forEach(function(obj)
+            {
+                var length = obj.getLength();
+                if (length != null)
+                {
+                    //debug.append("Length: " + length);
+                }
+
+                var pos = obj.getPos();
+                if (pos != null)
+                {
+                    debug.append("Pos: " + pos);
+                }
+            });
         });
 
     }

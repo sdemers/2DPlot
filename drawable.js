@@ -7,7 +7,7 @@ function Drawable()
     this.color = "#1234ff";
 }
 
-Drawable.prototype.draw = function(context)
+Drawable.prototype.draw = function(context, translatePos)
 {
 }
 
@@ -16,6 +16,26 @@ Drawable.prototype.draw = function(context)
 Drawable.prototype.getLimit = function()
 {
     return null;
+}
+
+Drawable.prototype.getDistanceDrawn = function(p)
+{
+    return null;
+}
+
+Drawable.prototype.getLength = function()
+{
+    return "";
+}
+
+Drawable.prototype.getAngle = function()
+{
+    return "";
+}
+
+Drawable.prototype.getPos = function()
+{
+    return "";
 }
 
 Drawable.prototype.setColor = function(color)

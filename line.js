@@ -14,6 +14,8 @@ function Line(startCoord, endCoord)
     this.startCoord = startCoord;
     this.endCoord = endCoord;
     this.size = 2;
+    this.drawnStart = startCoord;
+    this.drawnEnd = endCoord;
 }
 
 Line.prototype.getLimit = function()
@@ -46,11 +48,11 @@ Line.prototype.setColor = function(color)
     this.color = color;
 }
 
-Line.prototype.draw = function(context)
+Line.prototype.draw = function(context, translatePos)
 {
     var vp = context.viewPort;
-    var scaled1 = vp.scale(this.startCoord);
-    var scaled2 = vp.scale(this.endCoord);
+    var scaled1 = vp.scale(this.startCoord).add(translatePos);
+    var scaled2 = vp.scale(this.endCoord).add(translatePos);
     var x1 = scaled1.getX();
     var y1 = scaled1.getY();
     var x2 = scaled2.getX();
@@ -64,7 +66,25 @@ Line.prototype.draw = function(context)
     context.lineTo(x2, y2);
     context.stroke();
 
+    this.drawnStart = new Coord(x1, y1);
+    this.drawnEnd = new Coord(x2, y2);
+
+    //debug.append(x1 + ", " + y1 + "<br>");
+    //debug.append(x2 + ", " + y2 + "<br>");
+
     context.closePath();
 }
 
+Line.prototype.getDistanceDrawn = function(p)
+{
+    return pointDistanceToLine(p, this.drawnStart, this.drawnEnd);
+}
 
+Line.prototype.getLength = function()
+{
+    var x2 = this.endCoord.getX() - this.startCoord.getX();
+    x2 *= x2;
+    var y2 = this.endCoord.getY() - this.startCoord.getY();
+    y2 *= y2;
+    return Math.sqrt(x2 + y2);
+}

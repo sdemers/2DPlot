@@ -52,6 +52,14 @@ Coord.prototype.max = function(rhs)
     return new Coord(x, y);
 }
 
+Coord.prototype.add = function(rhs)
+{
+    var x = this.x + rhs.x;
+    var y = this.y + rhs.y;
+
+    return new Coord(x, y);
+}
+
 /// Point class --------------------------------------------
 
 Point.prototype = new Drawable;
@@ -63,11 +71,18 @@ function Point(coord)
 
     this.coord = coord;
     this.size = 2;
+    this.coordDrawn = coord;
 }
 
 Point.prototype.getCoord = function()
 {
     return this.coord;
+}
+
+// Used to print position
+Point.prototype.getPos = function()
+{
+    return "(" + this.coord.getX() + ", " + this.coord.getY() + ")";
 }
 
 Point.prototype.getLimit = function()
@@ -85,10 +100,17 @@ Point.prototype.setColor = function(color)
     this.color = color;
 }
 
-Point.prototype.draw = function(context)
+Point.prototype.getDistanceDrawn = function(p)
+{
+    return pointDistanceToPoint(p, this.coordDrawn);
+}
+
+Point.prototype.draw = function(context, translatePos)
 {
     var vp = context.viewPort;
-    var scaled = vp.scale(this.coord);
+    var scaled = vp.scale(this.coord).add(translatePos);
+
+    this.coordDrawn = scaled;
 
     var x = scaled.getX();
     var y = scaled.getY();
