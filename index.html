@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="en-US" xml:lang="en-US" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>Bezier Plot</title>
+<title>2D Plot</title>
 <meta http-equiv="content-type" content="text/html;charset=iso-8859-1" />
 
 <script type="text/javascript" src="utils.js"></script>
@@ -10,8 +10,6 @@
 <script type="text/javascript" src="line.js"></script>
 <script type="text/javascript" src="bezier.js"></script>
 <script type="text/javascript" src="bezier_plot.js"></script>
-
-<!-- <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.js"></script> -->
 
 <script language="javascript">
 
@@ -25,6 +23,8 @@
         var topLeft = findPos(canvas);
         canvas.leftPos = topLeft[0];
         canvas.topPos = topLeft[1];
+
+        var divs = [];
 
         var scaleMultiplier = 0.8;
         var mouseDown = false;
@@ -81,7 +81,11 @@
             //debug.append(point.getX() + ", " + point.getY() + "<br>");
             var closeObjects = getCloseObjects(point);
 
-            //debug.clear();
+            divs.forEach(deleteDiv);
+            divs.length = 0;
+
+            var i = 0;
+            var text = "";
             closeObjects.forEach(function(obj)
             {
                 var length = obj.getLength();
@@ -91,9 +95,15 @@
                 }
 
                 var pos = obj.getPos();
-                if (pos != null)
+                if (pos != null && pos != "")
                 {
-                    debug.append("Pos: " + pos);
+                    text += "Pos: " + pos + "<br>";
+                }
+
+                if (text != "")
+                {
+                    divs.push("div" + i);
+                    createDiv("div" + i, point.getX() - 30, point.getY() - 30, text);
                 }
             });
         });
@@ -117,6 +127,30 @@
         {
             return;
         }
+    }
+
+    function createDiv(name, x, y, text)
+    {
+        var divTag = document.createElement("div");
+        var canvas = document.getElementById("canvasWrapper");
+
+        divTag.id = name;
+        divTag.setAttribute("align", "center");
+        divTag.style.top = y + "px"
+        divTag.style.left = x + "px"
+
+        divTag.className = "dynamicDiv";
+
+        divTag.innerHTML = text;
+
+        canvas.appendChild(divTag);
+    }
+
+    function deleteDiv(name)
+    {
+        var divTag = document.getElementById(name);
+        var canvas = document.getElementById("canvasWrapper");
+        canvas.removeChild(divTag);
     }
 
     function resetZoom()
@@ -273,6 +307,19 @@
         height: 30px;
         margin: 0px 0px 2px 0px;
     }
+
+    /* Div to contain information about point, lines, etc */
+    .dynamicDiv {
+        position: absolute;
+        border: solid 1px #c0c0c0;
+        background-color: #e1e1e1;
+        font-size: 10px;
+        font-family: arial, helvetica, sans;
+        color: #000;
+        padding: 5px;
+        z-index: 99;
+    }
+
 </style>
 </head>
 
