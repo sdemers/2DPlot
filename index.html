@@ -78,36 +78,42 @@
         canvas.addEventListener("mousemove", function(evt) {
             var point = new Coord((evt.clientX - this.leftPos), (evt.clientY - this.topPos));
             debug.clear()
-            //debug.append(point.getX() + ", " + point.getY() + "<br>");
+
             var closeObjects = getCloseObjects(point);
 
             divs.forEach(deleteDiv);
             divs.length = 0;
 
             var i = 0;
-            var text = "";
+            var text = [];
             closeObjects.forEach(function(obj)
             {
-                var length = obj.getLength();
-                if (length != null)
-                {
-                    //debug.append("Length: " + length);
-                }
+                var infoBoxPos = obj.getInfoBoxPos();
 
-                var pos = obj.getPos();
-                if (pos != null && pos != "")
+                if (infoBoxPos != null)
                 {
-                    text += "Pos: " + pos + "<br>";
-                }
+                    var length = obj.getLength();
+                    if (length != null)
+                    {
+                        //debug.append("Length: " + length);
+                    }
 
-                if (text != "")
-                {
-                    divs.push("div" + i);
-                    createDiv("div" + i, point.getX() - 30, point.getY() - 30, text);
+                    var pos = obj.getTextPos();
+                    if (pos != null && pos != "")
+                    {
+                        text.uniquePush("Pos: " + pos);
+                    }
+
+                    text.forEach(function(t)
+                    {
+                        divs.push("div" + i);
+                        createDiv("div" + i,
+                                  infoBoxPos.getX() - 50, infoBoxPos.getY() - 30,
+                                  t + "<br>");
+                    });
                 }
             });
         });
-
     }
 
     function init(canvasName)

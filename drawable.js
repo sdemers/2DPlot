@@ -33,9 +33,17 @@ Drawable.prototype.getAngle = function()
     return "";
 }
 
-Drawable.prototype.getPos = function()
+Drawable.prototype.getTextPos = function()
 {
     return "";
+}
+
+
+
+// Position of the box used to print information about this object in the canvas.
+Drawable.prototype.getInfoBoxPos = function()
+{
+    return null;
 }
 
 Drawable.prototype.setColor = function(color)

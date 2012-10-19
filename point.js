@@ -79,10 +79,14 @@ Point.prototype.getCoord = function()
     return this.coord;
 }
 
-// Used to print position
-Point.prototype.getPos = function()
+Point.prototype.getTextPos = function()
 {
     return "(" + this.coord.getX() + ", " + this.coord.getY() + ")";
+}
+
+Point.prototype.getInfoBoxPos = function()
+{
+    return this.coordDrawn;
 }
 
 Point.prototype.getLimit = function()

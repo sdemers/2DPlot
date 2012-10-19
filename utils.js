@@ -110,3 +110,11 @@ String.prototype.trim = function()
     return a.replace(/\s+$/, '');
 };
 
+
+Array.prototype.uniquePush = function(el)
+{
+    if (this.indexOf(el) == -1)
+    {
+        this.push(el);
+    }
+}
