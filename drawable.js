@@ -25,12 +25,12 @@ Drawable.prototype.getDistanceDrawn = function(p)
 
 Drawable.prototype.getLength = function()
 {
-    return "";
+    return null;
 }
 
 Drawable.prototype.getAngle = function()
 {
-    return "";
+    return null;
 }
 
 Drawable.prototype.getTextPos = function()

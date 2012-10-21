@@ -48,6 +48,12 @@ Line.prototype.setColor = function(color)
     this.color = color;
 }
 
+Line.prototype.getAngle = function()
+{
+    var angle = Math.atan(slope(this.getStartCoord(), this.getEndCoord()));
+    return normalizeRadian(angle);
+}
+
 Line.prototype.draw = function(context, translatePos)
 {
     var vp = context.viewPort;

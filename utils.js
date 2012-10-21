@@ -58,7 +58,8 @@ function slope(c1, c2)
 // Returns the distance between a point p and a line c1, c2
 function pointDistanceToLine(p, c1, c2)
 {
-    if (isBetween(c1.getX(), p.getX(), c2.getX()) == false)
+    if (isBetween(c1.getX(), p.getX(), c2.getX()) == false &&
+        isBetween(c1.getY(), p.getY(), c2.getY()) == false)
     {
         return null;
     }
@@ -87,6 +88,8 @@ function pointDistanceToLine(p, c1, c2)
     // d = | Am + Bn + C | / sqrt(A2 + B2)
     var d = Math.abs(A * pp.getX() + B * pp.getY() + C) / Math.sqrt(A * A + B * B);
 
+    //debug.append("d: " + d);
+
     return d;
 }
 
@@ -109,6 +112,31 @@ function isBetween(a, b, c)
     }
 
     return false;
+}
+
+function degToRad(d)
+{
+    return d * Math.PI / 180;
+}
+
+function radToDeg(r)
+{
+    return r * 180 / Math.PI;
+}
+
+function normalizeRadian(angle)
+{
+    while (angle < 0)
+    {
+        angle += 2 * Math.PI;
+    }
+
+    while (angle > 2 * Math.PI)
+    {
+        angle -= 2 * Math.PI;
+    }
+
+    return angle;
 }
 
 function Debug(div)
