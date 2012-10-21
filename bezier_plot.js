@@ -6,6 +6,8 @@ var context = null;
 var zoom = null;
 var objects = new Array();
 
+var maxPointerDistance = 15;
+
 var debug = null;
 
 function draw(scale, translatePos)
@@ -49,10 +51,6 @@ function draw(scale, translatePos)
 
         objects.forEach(function(obj) { obj.draw(context, translatePos); });
 
-        //var text = "Limits: (" + l0.x + ", " + l0.y + "), (" + l1.x + ", " + l1.y + ")";
-        //context.translate(-translatePos.x, -translatePos.y);
-        //context.strokeText(text, 20, 20);
-
         context.restore();
     }
 }
@@ -60,7 +58,6 @@ function draw(scale, translatePos)
 function clearCanvas()
 {
     objects = [];
-    //debug.clear();
     emptyCanvas();
 }
 
@@ -312,7 +309,7 @@ function getCloseObjects(coord)
         var d = obj.getDistanceDrawn(coord)
         if (d != null)
         {
-            if (d < 15)
+            if (d < maxPointerDistance)
             {
                 closeObjects.push(obj);
             }
@@ -369,8 +366,6 @@ ViewPort.prototype.scale = function(c)
 
     var newX = (c.getX() + (-1 * this.minX)) * ratioX;
     var newY = this.height - ((c.getY() + (-1 * this.minY)) * ratioY);
-
-    //debug.append(newX + ', ' + newY + '<br>');
 
     return new Coord(newX, newY);
 }

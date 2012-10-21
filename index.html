@@ -84,35 +84,41 @@
             divs.forEach(deleteDiv);
             divs.length = 0;
 
-            var i = 0;
-            var text = [];
-            closeObjects.forEach(function(obj)
+            for (var i = 0; i < closeObjects.length; ++i)
             {
-                var infoBoxPos = obj.getInfoBoxPos();
+                var text = [];
+                var infoBoxPos = closeObjects[i].getInfoBoxPos();
 
                 if (infoBoxPos != null)
                 {
-                    var length = obj.getLength();
-                    if (length != null)
+                    var length = closeObjects[i].getLength();
+                    if (length != null && length != "")
                     {
-                        //debug.append("Length: " + length);
+                        text.uniquePush("Len: " + length.toFixed(3));
                     }
 
-                    var pos = obj.getTextPos();
+                    var pos = closeObjects[i].getTextPos();
                     if (pos != null && pos != "")
                     {
                         text.uniquePush("Pos: " + pos);
                     }
-
-                    text.forEach(function(t)
-                    {
-                        divs.push("div" + i);
-                        createDiv("div" + i,
-                                  infoBoxPos.getX() - 50, infoBoxPos.getY() - 30,
-                                  t + "<br>");
-                    });
                 }
-            });
+
+                var divText = "";
+
+                text.forEach(function(t)
+                {
+                    divText += t + "<br>";
+                });
+
+                if (divText != "")
+                {
+                    divs.push("div" + i);
+                    createDiv("div" + i,
+                              infoBoxPos.getX() - 50, infoBoxPos.getY() - 30,
+                              divText);
+                }
+            }
         });
     }
 
@@ -171,7 +177,7 @@
 
     function clear()
     {
-        this.value = "0,0 10,90 | 150,110 200,-10"
+        this.value = "0,0 10,90 | 150,110 200,-10";
         this.focus();
     }
 

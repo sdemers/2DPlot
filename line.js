@@ -75,6 +75,13 @@ Line.prototype.draw = function(context, translatePos)
     context.closePath();
 }
 
+Line.prototype.getInfoBoxPos = function()
+{
+    var x = (this.drawnEnd.getX() + this.drawnStart.getX()) / 2;
+    var y = (this.drawnEnd.getY() + this.drawnStart.getY()) / 2;
+    return new Coord(x, y);
+}
+
 Line.prototype.getDistanceDrawn = function(p)
 {
     return pointDistanceToLine(p, this.drawnStart, this.drawnEnd);

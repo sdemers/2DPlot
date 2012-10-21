@@ -47,29 +47,46 @@ function slope(c1, c2)
         return 100000000.0;
     }
 
-    return ((c2.getY() - c1.getY()) / (c2.getX() - c1.getX()));
+    if (c1.getX() < c2.getX())
+    {
+        return (c2.getY() - c1.getY()) / (c2.getX() - c1.getX());
+    }
+
+    return (c1.getY() - c2.getY()) / (c1.getX() - c2.getX());
 }
 
 // Returns the distance between a point p and a line c1, c2
 function pointDistanceToLine(p, c1, c2)
 {
-    var m = slope(c1, c2);
+    if (isBetween(c1.getX(), p.getX(), c2.getX()) == false)
+    {
+        return null;
+    }
+
+    // Invert y axis
+    var c1p = new Coord(c1.getX(), -c1.getY());
+    var c2p = new Coord(c2.getX(), -c2.getY());
+    var pp = new Coord(p.getX(), -p.getY());
+
+    var m = slope(c1p, c2p);
 
     // y = mx + b
     // b = y - mx
-    var b = c1.getY() - (m * c1.getX());
+    var b = c1p.getY() - (m * c1p.getX());
 
+    // -mx + y -b = 0
     // Ax + By + C = 0
     // A = -m
-    // B = -1
-    // C = b
+    // B = 1
+    // C = -b 
     var A = -m;
-    var B = -1;
-    var C = b;
+    var B = 1;
+    var C = -b;
 
     // distance formula:
     // d = | Am + Bn + C | / sqrt(A2 + B2)
-    var d = Math.abs(A * p.getX() + B * p.getY() + C) / Math.sqrt(A * A + B * B);
+    var d = Math.abs(A * pp.getX() + B * pp.getY() + C) / Math.sqrt(A * A + B * B);
+
     return d;
 }
 
@@ -79,7 +96,19 @@ function pointDistanceToPoint(p1, p2)
     var A = p2.getX() - p1.getX();
     var B = p2.getY() - p1.getY();
     var d = Math.sqrt(A * A + B * B);
+
     return d;
+}
+
+function isBetween(a, b, c)
+{
+    if ((a < b && b < c) ||
+        (c < b && b < a))
+    {
+        return true;
+    }
+
+    return false;
 }
 
 function Debug(div)
