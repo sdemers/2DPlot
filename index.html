@@ -17,6 +17,11 @@
     var scale = 1.0;
     var startDragOffset = {};
 
+    var showOptions = {};
+    showOptions['optionPos'] = true;
+    showOptions['optionLen'] = true;
+    showOptions['optionAngle'] = true;
+
     function initZoom()
     {
         var canvas = document.getElementById("canvas");
@@ -92,20 +97,20 @@
                 if (infoBoxPos != null)
                 {
                     var length = closeObjects[i].getLength();
-                    if (length != null)
+                    if (showOptions['optionLen'] && length != null)
                     {
                         text.uniquePush("Len: " + length.toFixed(3));
                     }
 
                     var angle = closeObjects[i].getAngle();
-                    if (angle != null)
+                    if (showOptions['optionAngle'] && angle != null)
                     {
                         var angleDeg = radToDeg(angle);
                         text.uniquePush("Angle: " + angleDeg.toFixed(2));
                     }
 
                     var pos = closeObjects[i].getTextPos();
-                    if (pos != null && pos != "")
+                    if (showOptions['optionPos'] && pos != null && pos != "")
                     {
                         text.uniquePush("Pos: " + pos);
                     }
@@ -278,6 +283,31 @@
         document.getElementById(d).style.display = "block";
     }
 
+    function clickInfoBoxOption()
+    {
+        document.getElementById("optionPos").disabled = (document.getElementById("optionInfobox").checked == false);
+        document.getElementById("optionLen").disabled = (document.getElementById("optionInfobox").checked == false);
+        document.getElementById("optionAngle").disabled = (document.getElementById("optionInfobox").checked == false);
+
+        if (document.getElementById("optionInfobox").checked)
+        {
+            clickOption('optionPos');
+            clickOption('optionLen');
+            clickOption('optionAngle');
+        }
+        else
+        {
+            showOptions['optionPos'] = false;
+            showOptions['optionLen'] = false;
+            showOptions['optionAngle'] = false;
+        }
+    }
+
+    function clickOption(option)
+    {
+        showOptions[option] = document.getElementById(option).checked;
+    }
+
 </script>
 
 <style type="text/css">
@@ -310,14 +340,36 @@
         right: 2px;
     }
 
+    #links {
+        width: 99%;
+        padding: 3px;
+        text-align: right;
+    }
+
     #help {
         display:none;
         position:absolute;
         top:35px;
+        right:10px;
         border:2px solid;
         background-color: #eeeeee;
         padding:5px;
         z-index: 99;
+    }
+
+    #options {
+        display:none;
+        position:absolute;
+        top:35px;
+        right:10px;
+        border:2px solid;
+        background-color: #eeeeee;
+        padding:5px;
+        z-index: 99;
+    }
+
+    #infoboxButtons {
+        padding-left:20px;
     }
 
     input[type = "button"] {
@@ -343,8 +395,11 @@
 </head>
 
 <body onload="clearTextAreas(); init('canvas'); initZoom();" bgcolor="#ffffff">
-    <div id="helpLink">
-        <a onmouseover="showContent('help'); return true;"
+    <div id="links">
+        <a onmouseover="showContent('options'); return true;"
+        href="javascript:ShowContent('options')">Options</a>
+        |
+        <a onmouseover="hideContent('options'); showContent('help'); return true;"
            onmouseout="hideContent('help'); return true;"
         href="javascript:ShowContent('help')">Help</a>
     </div>
@@ -355,6 +410,19 @@
         Rectangles: each group of 2 points is used to form a rectangle (top,left) (bottom,right).<br/>
         Bézier curves: each group of 4 points is used to form a cubic bézier curve.<br/><br/>
         Note: any non-numeric character is ignored, except "|"
+    </div>
+    <div id="options">
+        <input type="checkbox" id="optionInfobox" checked
+            onclick="clickInfoBoxOption(); return true;"> Show infoboxes<br>
+        <div id="infoboxButtons">
+            <input type="checkbox" id="optionPos" checked
+                onclick="clickOption('optionPos'); return true;"> Show point position<br>
+            <input type="checkbox" id="optionLen" checked
+                onclick="clickOption('optionLen'); return true;"> Show line length<br>
+            <input type="checkbox" id="optionAngle" checked
+                onclick="clickOption('optionAngle'); return true;"> Show line angle<br><br>
+        </div>
+        <button onclick="hideContent('options');">Close</button>
     </div>
     <div id="data">
         <textarea name="lineData" rows=30 wrap="soft"></textarea><br/>
