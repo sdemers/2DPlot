@@ -9,6 +9,7 @@
 <script type="text/javascript" src="point.js"></script>
 <script type="text/javascript" src="line.js"></script>
 <script type="text/javascript" src="bezier.js"></script>
+<script type="text/javascript" src="latlong.js"></script>
 <script type="text/javascript" src="bezier_plot.js"></script>
 
 <script language="javascript">
@@ -16,6 +17,7 @@
     var translatePos = {x:0, y:0};
     var scale = 1.0;
     var startDragOffset = {};
+    var useLatLong = false;
 
     var showOptions = {};
     showOptions['optionPos'] = true;
@@ -29,6 +31,7 @@
         canvas.leftPos = topLeft[0];
         canvas.topPos = topLeft[1];
 
+        // dynamic infobox divs 
         var divs = [];
 
         var scaleMultiplier = 0.8;
@@ -105,8 +108,7 @@
                     var angle = closeObjects[i].getAngle();
                     if (showOptions['optionAngle'] && angle != null)
                     {
-                        var angleDeg = radToDeg(angle);
-                        text.uniquePush("Angle: " + angleDeg.toFixed(2));
+                        text.uniquePush("Angle: " + angle.toDegrees().toFixed(2));
                     }
 
                     var pos = closeObjects[i].getTextPos();
@@ -147,10 +149,6 @@
             var h = canvas.height = canvas.clientHeight;
             context.viewPort = new ViewPort(w, h);
         }
-        else
-        {
-            return;
-        }
     }
 
     function createDiv(name, x, y, text)
@@ -189,7 +187,8 @@
 
     function clear()
     {
-        this.value = "0,0 10,90  150,110 200,-10";
+        //this.value = "0,0 10,90  150,110 200,-10";
+        this.value = "0.7932945, -1.2760803 0.7953604, -1.2771948 0.7946051, -1.2800950";
         this.focus();
     }
 
@@ -303,9 +302,15 @@
         }
     }
 
+    // sets the option true or false according to the button's state
     function clickOption(option)
     {
         showOptions[option] = document.getElementById(option).checked;
+    }
+
+    function clickUseLatLong()
+    {
+        useLatLong = document.getElementById("optionLatLong").checked;
     }
 
 </script>
@@ -422,6 +427,8 @@
             <input type="checkbox" id="optionAngle" checked
                 onclick="clickOption('optionAngle'); return true;"> Show line angle<br><br>
         </div>
+        <input type="checkbox" id="optionLatLong"
+            onclick="clickUseLatLong(); return true;"> Use Lat/Long<br><br>
         <button onclick="hideContent('options');">Close</button>
     </div>
     <div id="data">

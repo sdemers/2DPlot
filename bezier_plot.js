@@ -92,6 +92,8 @@ function parseLines(data)
 
     var lines = new Array();
 
+    var firstCoord = true;
+
     for (i = 0; i < linesData.length; ++i)
     {
         var set = new Array();
@@ -111,7 +113,22 @@ function parseLines(data)
 
         for (j = 0; j < positions.length; j += 2)
         {
-			coord = new Coord(parseFloat(positions[j]), parseFloat(positions[j+1]));
+			var coord = new Coord(parseFloat(positions[j]), parseFloat(positions[j+1]));
+
+            if (useLatLong)
+            {
+                var latLong = new LatLong(coord.getX(), coord.getY());
+                if (firstCoord)
+                {
+                    setProjectionCenter(latLong);
+                    coord = new Coord(0, 0);
+                    firstCoord = false;
+                }
+                else
+                {
+                    coord = latLong.convertToXY();
+                }
+            }
             set.push(coord);
         }
 

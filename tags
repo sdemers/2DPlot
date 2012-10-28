@@ -1,0 +1,123 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+Array	utils.js	/^Array.prototype.uniquePush = function(el)$/;"	c
+Array.uniquePush	utils.js	/^Array.prototype.uniquePush = function(el)$/;"	m
+Bezier	bezier.js	/^Bezier.prototype = new Drawable;$/;"	c
+Bezier.constructor	bezier.js	/^Bezier.prototype.constructor = Bezier;$/;"	m
+Bezier.draw	bezier.js	/^Bezier.prototype.draw = function(ctx, translatePos)$/;"	m
+Bezier.getLimit	bezier.js	/^Bezier.prototype.getLimit = function()$/;"	m
+Coord	point.js	/^function Coord(x, y)$/;"	c
+Coord.add	point.js	/^Coord.prototype.add = function(rhs)$/;"	m
+Coord.getX	point.js	/^Coord.prototype.getX = function()$/;"	m
+Coord.getY	point.js	/^Coord.prototype.getY = function()$/;"	m
+Coord.max	point.js	/^Coord.prototype.max = function(rhs)$/;"	m
+Coord.min	point.js	/^Coord.prototype.min = function(rhs)$/;"	m
+Coord.setX	point.js	/^Coord.prototype.setX = function(x)$/;"	m
+Coord.setXY	point.js	/^Coord.prototype.setXY = function(x, y)$/;"	m
+Coord.setY	point.js	/^Coord.prototype.setY = function(y)$/;"	m
+Debug	utils.js	/^function Debug(div)$/;"	c
+Debug.append	utils.js	/^Debug.prototype.append = function(str)$/;"	m
+Debug.clear	utils.js	/^Debug.prototype.clear = function()$/;"	m
+Debug.out	utils.js	/^Debug.prototype.out = function(str)$/;"	m
+Drawable	drawable.js	/^function Drawable()$/;"	c
+Drawable.draw	drawable.js	/^Drawable.prototype.draw = function(context, translatePos)$/;"	m
+Drawable.getAngle	drawable.js	/^Drawable.prototype.getAngle = function()$/;"	m
+Drawable.getDistanceDrawn	drawable.js	/^Drawable.prototype.getDistanceDrawn = function(p)$/;"	m
+Drawable.getInfoBoxPos	drawable.js	/^Drawable.prototype.getInfoBoxPos = function()$/;"	m
+Drawable.getLength	drawable.js	/^Drawable.prototype.getLength = function()$/;"	m
+Drawable.getLimit	drawable.js	/^Drawable.prototype.getLimit = function()$/;"	m
+Drawable.getTextPos	drawable.js	/^Drawable.prototype.getTextPos = function()$/;"	m
+Drawable.setColor	drawable.js	/^Drawable.prototype.setColor = function(color)$/;"	m
+LatLong	latlong.js	/^function LatLong(lat, lon)$/;"	c
+LatLong.convertToXY	latlong.js	/^LatLong.prototype.convertToXY = function()$/;"	m
+Line	line.js	/^Line.prototype = new Drawable;$/;"	c
+Line.constructor	line.js	/^Line.prototype.constructor = Line;$/;"	m
+Line.draw	line.js	/^Line.prototype.draw = function(context, translatePos)$/;"	m
+Line.getAngle	line.js	/^Line.prototype.getAngle = function()$/;"	m
+Line.getDistanceDrawn	line.js	/^Line.prototype.getDistanceDrawn = function(p)$/;"	m
+Line.getEndCoord	line.js	/^Line.prototype.getEndCoord = function()$/;"	m
+Line.getInfoBoxPos	line.js	/^Line.prototype.getInfoBoxPos = function()$/;"	m
+Line.getLength	line.js	/^Line.prototype.getLength = function()$/;"	m
+Line.getLimit	line.js	/^Line.prototype.getLimit = function()$/;"	m
+Line.getStartCoord	line.js	/^Line.prototype.getStartCoord = function()$/;"	m
+Line.setColor	line.js	/^Line.prototype.setColor = function(color)$/;"	m
+Line.setSize	line.js	/^Line.prototype.setSize = function(size)$/;"	m
+Number	utils.js	/^Number.prototype.toDMS = function()$/;"	c
+Number.toDMS	utils.js	/^Number.prototype.toDMS = function()$/;"	m
+Number.toDegrees	utils.js	/^Number.prototype.toDegrees = function()$/;"	m
+Number.toLat	utils.js	/^Number.prototype.toLat = function()$/;"	m
+Number.toLong	utils.js	/^Number.prototype.toLong = function()$/;"	m
+Number.toPrecision	utils.js	/^Number.prototype.toPrecision = function(fig)$/;"	m
+Number.toRadians	utils.js	/^Number.prototype.toRadians = function()$/;"	m
+Point	point.js	/^Point.prototype = new Drawable;$/;"	c
+Point.constructor	point.js	/^Point.prototype.constructor = Point;$/;"	m
+Point.draw	point.js	/^Point.prototype.draw = function(context, translatePos)$/;"	m
+Point.getCoord	point.js	/^Point.prototype.getCoord = function()$/;"	m
+Point.getDistanceDrawn	point.js	/^Point.prototype.getDistanceDrawn = function(p)$/;"	m
+Point.getInfoBoxPos	point.js	/^Point.prototype.getInfoBoxPos = function()$/;"	m
+Point.getLimit	point.js	/^Point.prototype.getLimit = function()$/;"	m
+Point.getTextPos	point.js	/^Point.prototype.getTextPos = function()$/;"	m
+Point.setColor	point.js	/^Point.prototype.setColor = function(color)$/;"	m
+Point.setSize	point.js	/^Point.prototype.setSize = function(size)$/;"	m
+String	utils.js	/^String.prototype.trim = function()$/;"	c
+String.trim	utils.js	/^String.prototype.trim = function()$/;"	m
+ViewPort	bezier_plot.js	/^function ViewPort(width, height)$/;"	c
+ViewPort.reset	bezier_plot.js	/^ViewPort.prototype.reset = function()$/;"	m
+ViewPort.scale	bezier_plot.js	/^ViewPort.prototype.scale = function(c)$/;"	m
+ViewPort.setLimits	bezier_plot.js	/^ViewPort.prototype.setLimits = function(c1, c2)$/;"	m
+addBezier	bezier_plot.js	/^function addBezier(curve)$/;"	f
+addLine	bezier_plot.js	/^function addLine(coord1, coord2, color)$/;"	f
+addPoint	bezier_plot.js	/^function addPoint(coord, color)$/;"	f
+clear	index.html	/^    function clear()$/;"	f
+clearCanvas	bezier_plot.js	/^function clearCanvas()$/;"	f
+clearText	index.html	/^    function clearText(area)$/;"	f
+clearTextAreas	index.html	/^    function clearTextAreas()$/;"	f
+clickInfoBoxOption	index.html	/^    function clickInfoBoxOption()$/;"	f
+clickOption	index.html	/^    function clickOption(option)$/;"	f
+clickUseLatLong	index.html	/^    function clickUseLatLong()$/;"	f
+context	bezier_plot.js	/^var context = null;$/;"	v
+createDiv	index.html	/^    function createDiv(name, x, y, text)$/;"	f
+debug	bezier_plot.js	/^var debug = null;$/;"	v
+deleteDiv	index.html	/^    function deleteDiv(name)$/;"	f
+draw	bezier_plot.js	/^function draw(scale, translatePos)$/;"	f
+drawBezier	bezier_plot.js	/^function drawBezier(curves, scale, translatePos)$/;"	f
+drawLines	bezier_plot.js	/^function drawLines(lines, scale, translatePos, close)$/;"	f
+drawPoints	bezier_plot.js	/^function drawPoints(points, scale, translatePos)$/;"	f
+drawRectangle	bezier_plot.js	/^function drawRectangle(points, scale, translatePos)$/;"	f
+earthRadius	utils.js	/^var earthRadius = 6371; \/\/ km$/;"	v
+earthRadiusInMeter	latlong.js	/^var earthRadiusInMeter = 6378.14 * 1000;$/;"	v
+emptyCanvas	bezier_plot.js	/^function emptyCanvas()$/;"	f
+findPos	utils.js	/^function findPos(obj)$/;"	f
+getCloseObjects	bezier_plot.js	/^function getCloseObjects(coord)$/;"	f
+getDistanceBetweenLatLong	utils.js	/^function getDistanceBetweenLatLong(coord1, coord2)$/;"	f
+hideContent	index.html	/^    function hideContent(d)$/;"	f
+init	index.html	/^    function init(canvasName)$/;"	f
+initZoom	index.html	/^    function initZoom()$/;"	f
+isBetween	utils.js	/^function isBetween(a, b, c)$/;"	f
+latLongToXY	utils.js	/^function latLongToXY(projectionCenter, coord)$/;"	f
+max	utils.js	/^function max(a, b)$/;"	f
+maxPointerDistance	bezier_plot.js	/^var maxPointerDistance = 15;$/;"	v
+min	utils.js	/^function min(a, b)$/;"	f
+normalizeRadian	utils.js	/^function normalizeRadian(angle)$/;"	f
+normalizeRadianToHalfPi	utils.js	/^function normalizeRadianToHalfPi(angle)$/;"	f
+normalizeRadianToPi	utils.js	/^function normalizeRadianToPi(angle)$/;"	f
+optional	utils.js	/^function optional(def, x)$/;"	f
+parseBezier	bezier_plot.js	/^function parseBezier(data)$/;"	f
+parseLines	bezier_plot.js	/^function parseLines(data)$/;"	f
+parsePoints	bezier_plot.js	/^function parsePoints(data)$/;"	f
+pointDistanceToLine	utils.js	/^function pointDistanceToLine(p, c1, c2)$/;"	f
+pointDistanceToPoint	utils.js	/^function pointDistanceToPoint(p1, p2)$/;"	f
+resetZoom	index.html	/^    function resetZoom()$/;"	f
+setProjectionCenter	latlong.js	/^function setProjectionCenter(projCenter)$/;"	f
+showContent	index.html	/^    function showContent(d)$/;"	f
+slope	utils.js	/^function slope(c1, c2)$/;"	f
+submitBezier	index.html	/^    function submitBezier(area)$/;"	f
+submitLines	index.html	/^    function submitLines(area)$/;"	f
+submitPoints	index.html	/^    function submitPoints(area)$/;"	f
+submitPolygons	index.html	/^    function submitPolygons(area)$/;"	f
+submitRectangle	index.html	/^    function submitRectangle(area)$/;"	f
+zoom	bezier_plot.js	/^var zoom = null;$/;"	v

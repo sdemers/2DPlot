@@ -1,3 +1,4 @@
+var earthRadius = 6371; // km
 
 function optional(def, x)
 {
@@ -114,16 +115,6 @@ function isBetween(a, b, c)
     return false;
 }
 
-function degToRad(d)
-{
-    return d * Math.PI / 180;
-}
-
-function radToDeg(r)
-{
-    return r * 180 / Math.PI;
-}
-
 function normalizeRadian(angle)
 {
     while (angle < 0)
@@ -138,6 +129,63 @@ function normalizeRadian(angle)
 
     return angle;
 }
+
+function normalizeRadianToPi(angle)
+{
+    while (angle < -Math.PI)
+    {
+        angle += Math.PI;
+    }
+
+    while (angle > Math.PI)
+    {
+        angle -= Math.PI;
+    }
+
+    return angle;
+}
+
+function normalizeRadianToHalfPi(angle)
+{
+    while (angle < -(Math.PI/2))
+    {
+        angle += Math.PI / 2;
+    }
+
+    while (angle > Math.PI/ 2)
+    {
+        angle -= Math.PI / 2;
+    }
+
+    return angle;
+}
+
+// http://www.movable-type.co.uk/scripts/latlong.html
+
+function latLongToXY(projectionCenter, coord)
+{
+}
+
+function getDistanceBetweenLatLong(coord1, coord2)
+{
+    var lat1 = coord1.getX();
+    var lon1 = coord1.getY();
+    var lat2 = coord2.getX();
+    var lon2 = coord2.getY();
+
+    var dLat = (lat2-lat1).toRad();
+    var dLon = (lon2-lon1).toRad();
+    var lat1 = lat1.toRad();
+    var lat2 = lat2.toRad();
+
+    var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+            Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2); 
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+    var d = R * c;
+
+    return d;
+}
+
 
 function Debug(div)
 {
@@ -174,4 +222,57 @@ Array.prototype.uniquePush = function(el)
     {
         this.push(el);
     }
+}
+
+// extend Number object with methods for presenting bearings & lat/longs
+
+Number.prototype.toDMS = function()
+{
+    // convert numeric degrees to deg/min/sec
+    var d = Math.abs(this);  // (unsigned result ready for appending compass dir'n)
+    d += 1/7200;  // add ? second for rounding
+    var deg = Math.floor(d);
+    var min = Math.floor((d-deg)*60);
+    var sec = Math.floor((d-deg-min/60)*3600);
+    // add leading zeros if required
+    if (deg<100) deg = '0' + deg;
+    if (deg<10) deg = '0' + deg;
+    if (min<10) min = '0' + min;
+    if (sec<10) sec = '0' + sec;
+    return deg + ' ' + min + '\'' + sec + '\"';
+}
+
+Number.prototype.toDegrees = function()
+{
+    return this * 180 / Math.PI;
+}
+
+Number.prototype.toRadians = function()
+{
+    return this * Math.PI / 180;
+}
+
+Number.prototype.toPrecision = function(fig)
+{ 
+    // override toPrecision method with one which displays 
+    if (this == 0)
+    {
+        return 0;                      // trailing zeros in place of exponential notation
+    }
+
+    var scale = Math.ceil(Math.log(this)*Math.LOG10E);
+    var mult = Math.pow(10, fig-scale);
+    return Math.round(this*mult)/mult;
+}
+
+Number.prototype.toLat = function()
+{
+    // convert numeric degrees to deg/min/sec latitude
+    return this.toDMS().slice(1) + (this < 0 ? 'S' : 'N');  // knock off initial '0' for lat!
+}
+
+Number.prototype.toLong = function()
+{
+    // convert numeric degrees to deg/min/sec longitude
+    return this.toDMS() + (this > 0 ? 'E' : 'W');
 }

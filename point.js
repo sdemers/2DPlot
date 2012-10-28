@@ -81,7 +81,7 @@ Point.prototype.getCoord = function()
 
 Point.prototype.getTextPos = function()
 {
-    return "(" + this.coord.getX() + ", " + this.coord.getY() + ")";
+    return "(" + this.coord.getX().toFixed(3) + ", " + this.coord.getY().toFixed(3) + ")";
 }
 
 Point.prototype.getInfoBoxPos = function()
