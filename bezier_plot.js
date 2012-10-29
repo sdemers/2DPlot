@@ -92,8 +92,6 @@ function parseLines(data)
 
     var lines = new Array();
 
-    var firstCoord = true;
-
     for (i = 0; i < linesData.length; ++i)
     {
         var set = new Array();
@@ -113,22 +111,7 @@ function parseLines(data)
 
         for (j = 0; j < positions.length; j += 2)
         {
-			var coord = new Coord(parseFloat(positions[j]), parseFloat(positions[j+1]));
-
-            if (useLatLong)
-            {
-                var latLong = new LatLong(coord.getX(), coord.getY());
-                if (firstCoord)
-                {
-                    setProjectionCenter(latLong);
-                    coord = new Coord(0, 0);
-                    firstCoord = false;
-                }
-                else
-                {
-                    coord = latLong.convertToXY();
-                }
-            }
+			var coord = allocateDrawingCoord(parseFloat(positions[j]), parseFloat(positions[j+1]));
             set.push(coord);
         }
 
@@ -158,7 +141,7 @@ function parsePoints(data)
         var x = pointsData[i].trim();
         var y = pointsData[i + 1].trim();
 
-        var coord = new Coord(parseFloat(x), parseFloat(y));
+        var coord = allocateDrawingCoord(parseFloat(x), parseFloat(y));
         points.push(coord);
     }
 
@@ -292,10 +275,10 @@ function parseBezier(data)
 
     for (i = 0; i < xy.length; i += 8)
     {
-        var bez = new Bezier(new Point(new Coord(xy[i], xy[i + 1])),
-                             new Coord(xy[i + 2], xy[i + 3]),
-                             new Coord(xy[i + 4], xy[i + 5]),
-                             new Point(new Coord(xy[i + 6], xy[i + 7])));
+        var bez = new Bezier(new Point(allocateDrawingCoord(xy[i], xy[i + 1])),
+                             allocateDrawingCoord(xy[i + 2], xy[i + 3]),
+                             allocateDrawingCoord(xy[i + 4], xy[i + 5]),
+                             new Point(allocateDrawingCoord(xy[i + 6], xy[i + 7])));
         curves.push(bez);
     }
 
@@ -385,4 +368,26 @@ ViewPort.prototype.scale = function(c)
     var newY = this.height - ((c.getY() + (-1 * this.minY)) * ratioY);
 
     return new Coord(newX, newY);
+}
+
+function allocateDrawingCoord(x, y)
+{
+    var coord = new Coord(x, y);
+
+    if (useLatLong)
+    {
+        var latLong = new LatLong(x, y);
+        if (resetProjectionCenter)
+        {
+            setProjectionCenter(latLong);
+            coord = new Coord(0, 0);
+            resetProjectionCenter = false;
+        }
+        else
+        {
+            coord = latLong.convertToXY();
+        }
+    }
+
+    return coord;
 }

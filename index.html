@@ -18,6 +18,7 @@
     var scale = 1.0;
     var startDragOffset = {};
     var useLatLong = false;
+    var resetProjectionCenter = true;
 
     var showOptions = {};
     showOptions['optionPos'] = true;
@@ -188,7 +189,7 @@
     function clear()
     {
         //this.value = "0,0 10,90  150,110 200,-10";
-        this.value = "0.7932945, -1.2760803 0.7953604, -1.2771948 0.7946051, -1.2800950";
+        this.value = "0.7932945, -1.2760803 0.7953604, -1.2771948 0.7946051, -1.2800950 0.7953898, -1.2806043";
         this.focus();
     }
 
@@ -211,6 +212,8 @@
 
     function submitPoints(area)
     {
+        resetProjectionCenter = true;
+
         textArea = document.getElementsByName(area)[0];
         if (textArea == null)
         {
@@ -222,6 +225,8 @@
 
     function submitLines(area)
     {
+        resetProjectionCenter = true;
+
         textArea = document.getElementsByName(area)[0];
         if (textArea == null)
         {
@@ -233,6 +238,8 @@
 
     function submitPolygons(area)
     {
+        resetProjectionCenter = true;
+
         textArea = document.getElementsByName(area)[0];
         if (textArea == null)
         {
@@ -244,6 +251,8 @@
 
     function submitRectangle(area)
     {
+        resetProjectionCenter = true;
+
         textArea = document.getElementsByName(area)[0];
         if (textArea == null)
         {
@@ -255,6 +264,8 @@
 
     function submitBezier(area)
     {
+        resetProjectionCenter = true;
+
         textArea = document.getElementsByName(area)[0];
         if (textArea == null)
         {
