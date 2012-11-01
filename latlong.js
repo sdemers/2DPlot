@@ -61,5 +61,34 @@ LatLong.prototype.convertToXY = function()
     var y = (radius / cosC) * (pj.cosLat * this.sinLat -
                                pj.sinLat * this.cosLat * cosLongDiff);
 
-    return new Coord(x, y);
+    var c = new Coord(x, y);
+    c.setLatLong(this);
+    return c;
 }
+
+LatLong.prototype.getDistance = function(rhs)
+{
+    var R = earthRadiusInMeter / 1000; // km
+    var diffLat = (rhs.lat - this.lat);
+    var diffLon = (rhs.lon - this.lon);
+
+    var a = Math.sin(diffLat / 2) * Math.sin(diffLat / 2) +
+            Math.sin(diffLon / 2) * Math.sin(diffLon / 2) * Math.cos(this.lat) * Math.cos(this.lat);
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    var d = R * c;
+    return d;
+}
+
+LatLong.prototype.getBearing = function(rhs)
+{
+    var diffLat = (rhs.lat - this.lat);
+    var diffLon = (rhs.lon - this.lon);
+
+    var y = Math.sin(diffLon) * Math.cos(rhs.lat);
+    var x = Math.cos(this.lat) * Math.sin(rhs.lat) -
+            Math.sin(this.lat) * Math.cos(rhs.lat) * Math.cos(diffLon);
+    var bearingRad = Math.atan2(y, x);
+
+    return normalizeRadian(bearingRad);
+}
+

@@ -6,7 +6,7 @@ var context = null;
 var zoom = null;
 var objects = new Array();
 
-var maxPointerDistance = 15;
+var maxPointerDistance = 10;
 
 var debug = null;
 
@@ -350,7 +350,7 @@ ViewPort.prototype.reset = function()
     this.minX = 0;
     this.minY = 0;
     this.maxX = this.width;
-    this.maxY = this.height;  
+    this.maxY = this.height;
 }
 
 ViewPort.prototype.scale = function(c)
@@ -387,6 +387,7 @@ function allocateDrawingCoord(x, y)
         {
             coord = latLong.convertToXY();
         }
+        coord.setLatLong(latLong);
     }
 
     return coord;

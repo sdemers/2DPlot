@@ -8,6 +8,8 @@ function Coord(x, y)
 {
     this.x = x;
     this.y = y;
+
+    this.latLong = null;
 }
 
 Coord.prototype.getX = function()
@@ -34,6 +36,16 @@ Coord.prototype.setXY = function(x, y)
 {
     this.setX(x);
     this.setY(y);
+}
+
+Coord.prototype.setLatLong = function(latLong)
+{
+    this.latLong = latLong;
+}
+
+Coord.prototype.getLatLong = function()
+{
+    return this.latLong;
 }
 
 Coord.prototype.min = function(rhs)
@@ -81,6 +93,11 @@ Point.prototype.getCoord = function()
 
 Point.prototype.getTextPos = function()
 {
+    if (useLatLong)
+    {
+        return "(" + this.coord.getLatLong().lat + ", " + this.coord.getLatLong().lon + ")";
+    }
+
     return "(" + this.coord.getX().toFixed(3) + ", " + this.coord.getY().toFixed(3) + ")";
 }
 

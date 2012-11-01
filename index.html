@@ -17,7 +17,7 @@
     var translatePos = {x:0, y:0};
     var scale = 1.0;
     var startDragOffset = {};
-    var useLatLong = false;
+    var useLatLong = true;
     var resetProjectionCenter = true;
 
     var showOptions = {};
@@ -103,13 +103,14 @@
                     var length = closeObjects[i].getLength();
                     if (showOptions['optionLen'] && length != null)
                     {
-                        text.uniquePush("Len: " + length.toFixed(3));
+                        text.uniquePush("Length: " + length.toFixed(3));
                     }
 
                     var angle = closeObjects[i].getAngle();
                     if (showOptions['optionAngle'] && angle != null)
                     {
-                        text.uniquePush("Angle: " + angle.toDegrees().toFixed(2));
+                        var desc = useLatLong ? "Bearing: " : "Angle: ";
+                        text.uniquePush(desc + angle.toDegrees().toFixed(2));
                     }
 
                     var pos = closeObjects[i].getTextPos();
@@ -189,7 +190,7 @@
     function clear()
     {
         //this.value = "0,0 10,90  150,110 200,-10";
-        this.value = "0.7932945, -1.2760803 0.7953604, -1.2771948 0.7946051, -1.2800950 0.7953898, -1.2806043";
+        this.value = "0.7932945, -1.2760803 0.7953604, -1.2771948 0.7953898, -1.2806043 0.7946051, -1.2800950";
         this.focus();
     }
 
@@ -369,7 +370,7 @@
         right:10px;
         border:2px solid;
         background-color: #eeeeee;
-        padding:5px;
+        padding: 15px;
         z-index: 99;
     }
 
@@ -380,11 +381,15 @@
         right:10px;
         border:2px solid;
         background-color: #eeeeee;
-        padding:5px;
+        padding:15px;
         z-index: 99;
     }
 
     #infoboxButtons {
+        padding-left:20px;
+    }
+
+    #distanceUnitDiv {
         padding-left:20px;
     }
 
@@ -420,11 +425,11 @@
         href="javascript:ShowContent('help')">Help</a>
     </div>
     <div id="help">
-        Points: each point is drawn individually.<br/>
-        Lines: each consecutive points are connected. Use "|" to separate points.<br/>
-        Polygons: like lines except that the last point is connected to the first point.<br/>
-        Rectangles: each group of 2 points is used to form a rectangle (top,left) (bottom,right).<br/>
-        Bézier curves: each group of 4 points is used to form a cubic bézier curve.<br/><br/>
+        <b>Points:</b> each point is drawn individually.<br/>
+        <b>Lines:</b> each consecutive points are connected to form a line. Use "|" to start a new line.<br/>
+        <b>Polygons:</b> similar to lines except that the last point is also connected to the first point.<br/>
+        <b>Rectangles:</b> each group of 2 points is used to form a rectangle (top,left) (bottom,right).<br/>
+        <b>Bézier curves:</b> each group of 4 points is used to form a cubic bézier curve.<br/><br/>
         Note: any non-numeric character is ignored, except "|"
     </div>
     <div id="options">
@@ -436,11 +441,17 @@
             <input type="checkbox" id="optionLen" checked
                 onclick="clickOption('optionLen'); return true;"> Show line length<br>
             <input type="checkbox" id="optionAngle" checked
-                onclick="clickOption('optionAngle'); return true;"> Show line angle<br><br>
+                onclick="clickOption('optionAngle'); return true;"> Show line angle/bearing<br><br>
         </div>
-        <input type="checkbox" id="optionLatLong"
-            onclick="clickUseLatLong(); return true;"> Use Lat/Long<br><br>
-        <button onclick="hideContent('options');">Close</button>
+        <input type="checkbox" id="optionLatLong" checked
+            onclick="clickUseLatLong(); return true;"> Use Lat/Long<br>
+        <div id="distanceUnitDiv">
+            <input type="radio" name="unit" id="km" checked>Kilometers<br>
+            <input type="radio" name="unit" id="m">Meters<br>
+            <input type="radio" name="unit" id="nm">Nautical Miles<br>
+            <input type="radio" name="unit" id="feet">Feet<br>
+        </div>
+        <br><button onclick="hideContent('options');">Close</button>
     </div>
     <div id="data">
         <textarea name="lineData" rows=30 wrap="soft"></textarea><br/>

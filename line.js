@@ -50,6 +50,11 @@ Line.prototype.setColor = function(color)
 
 Line.prototype.getAngle = function()
 {
+    if (useLatLong)
+    {
+        return this.startCoord.getLatLong().getBearing(this.endCoord.getLatLong());
+    }
+
     var angle = Math.atan(slope(this.getStartCoord(), this.getEndCoord()));
     return normalizeRadian(angle);
 }
@@ -73,7 +78,9 @@ Line.prototype.draw = function(context, translatePos)
     context.stroke();
 
     this.drawnStart = new Coord(x1, y1);
+    this.drawnStart.setLatLong(this.startCoord.getLatLong());
     this.drawnEnd = new Coord(x2, y2);
+    this.drawnEnd.setLatLong(this.endCoord.getLatLong());
 
     //debug.append(x1 + ", " + y1 + "<br>");
     //debug.append(x2 + ", " + y2 + "<br>");
@@ -90,11 +97,25 @@ Line.prototype.getInfoBoxPos = function()
 
 Line.prototype.getDistanceDrawn = function(p)
 {
+    var c1 = this.drawnStart;
+    var c2 = this.drawnEnd;
+
+    if (isBetween(c1.getX(), p.getX(), c2.getX()) == false &&
+        isBetween(c1.getY(), p.getY(), c2.getY()) == false)
+    {
+        return null;
+    }
+
     return pointDistanceToLine(p, this.drawnStart, this.drawnEnd);
 }
 
 Line.prototype.getLength = function()
 {
+    if (useLatLong)
+    {
+        return this.endCoord.getLatLong().getDistance(this.startCoord.getLatLong());
+    }
+
     var x2 = this.endCoord.getX() - this.startCoord.getX();
     x2 *= x2;
     var y2 = this.endCoord.getY() - this.startCoord.getY();
