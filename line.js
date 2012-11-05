@@ -56,7 +56,7 @@ Line.prototype.getAngle = function()
     }
 
     var angle = Math.atan(slope(this.getStartCoord(), this.getEndCoord()));
-    return normalizeRadian(angle);
+    return angle;
 }
 
 Line.prototype.draw = function(context, translatePos)
@@ -109,11 +109,22 @@ Line.prototype.getDistanceDrawn = function(p)
     return pointDistanceToLine(p, this.drawnStart, this.drawnEnd);
 }
 
+// Returns line length
 Line.prototype.getLength = function()
 {
     if (useLatLong)
     {
-        return this.endCoord.getLatLong().getDistance(this.startCoord.getLatLong());
+        // return km by default
+        var distance = this.endCoord.getLatLong().getDistance(this.startCoord.getLatLong());
+
+        switch (distanceUnit)
+        {
+            case "m":     distance *= 1000;      break;
+            case "feet":  distance *= 3280.8399; break;
+            case "nm":    distance *= 0.54;      break;
+            case "miles": distance *= 0.6214;    break;
+        }
+        return distance;
     }
 
     var x2 = this.endCoord.getX() - this.startCoord.getX();

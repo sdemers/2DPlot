@@ -19,6 +19,7 @@
     var startDragOffset = {};
     var useLatLong = true;
     var resetProjectionCenter = true;
+    var distanceUnit = "km"; // "m", "feet", "nm", "miles"
 
     var showOptions = {};
     showOptions['optionPos'] = true;
@@ -299,6 +300,8 @@
         document.getElementById("optionPos").disabled = (document.getElementById("optionInfobox").checked == false);
         document.getElementById("optionLen").disabled = (document.getElementById("optionInfobox").checked == false);
         document.getElementById("optionAngle").disabled = (document.getElementById("optionInfobox").checked == false);
+        document.getElementById("optionLatLong").disabled = (document.getElementById("optionInfobox").checked == false);
+        clickUseLatLong();
 
         if (document.getElementById("optionInfobox").checked)
         {
@@ -320,9 +323,30 @@
         showOptions[option] = document.getElementById(option).checked;
     }
 
+    function clickDistanceUnit()
+    {
+        var form = document.forms[0]
+        for (var i = 0; i < form.unit.length; ++i)
+        {
+            if (form.unit[i].checked)
+            {
+                distanceUnit = form.unit[i].value;
+                break;
+            }
+        }
+    }
+
     function clickUseLatLong()
     {
         useLatLong = document.getElementById("optionLatLong").checked;
+
+        var optionDisabled = (document.getElementById("optionLatLong").checked == false ||
+                              document.getElementById("optionLatLong").disabled);
+        document.getElementById("unitKm").disabled = optionDisabled;
+        document.getElementById("unitMeters").disabled = optionDisabled;
+        document.getElementById("unitMiles").disabled = optionDisabled;
+        document.getElementById("unitNm").disabled = optionDisabled;
+        document.getElementById("unitFeet").disabled = optionDisabled;
     }
 
 </script>
@@ -442,14 +466,17 @@
                 onclick="clickOption('optionLen'); return true;"> Show line length<br>
             <input type="checkbox" id="optionAngle" checked
                 onclick="clickOption('optionAngle'); return true;"> Show line angle/bearing<br><br>
-        </div>
-        <input type="checkbox" id="optionLatLong" checked
-            onclick="clickUseLatLong(); return true;"> Use Lat/Long<br>
-        <div id="distanceUnitDiv">
-            <input type="radio" name="unit" id="km" checked>Kilometers<br>
-            <input type="radio" name="unit" id="m">Meters<br>
-            <input type="radio" name="unit" id="nm">Nautical Miles<br>
-            <input type="radio" name="unit" id="feet">Feet<br>
+            <input type="checkbox" id="optionLatLong" checked
+                onclick="clickUseLatLong(); return true;"> Use Lat/Long<br>
+            <div id="distanceUnitDiv">
+                <form name="distanceUnit">
+                    <input type="radio" name="unit" id="unitKm" value="km" checked onclick="clickDistanceUnit(); return true;">Kilometers<br>
+                    <input type="radio" name="unit" id="unitMeters" value="m" onclick="clickDistanceUnit(); return true;">Meters<br>
+                    <input type="radio" name="unit" id="unitMiles" value="miles" onclick="clickDistanceUnit(); return true;">Miles<br>
+                    <input type="radio" name="unit" id="unitNm" value="nm" onclick="clickDistanceUnit(); return true;">Nautical Miles<br>
+                    <input type="radio" name="unit" id="unitFeet" value="feet" onclick="clickDistanceUnit(); return true;">Feet<br>
+                </form>
+            </div>
         </div>
         <br><button onclick="hideContent('options');">Close</button>
     </div>
